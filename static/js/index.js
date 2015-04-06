@@ -49,13 +49,7 @@ var showAuthor = {
   },
   hover: function(span){
 
-    if(timer) { // wait a second before showing!
-      clearTimeout(timer);
-      timer = null;
-    }
-    timer = setTimeout(function(){
-      showAuthor.show(span);
-    }, 1000);
+    showAuthor.show(span);
 
   },
   show: function(span){
@@ -124,10 +118,6 @@ var showAuthor = {
       return;
     }
     var span = target.target;
-    var fontSize = $(span).parent().css('font-size');
-    var top = $(span).context.offsetTop -14;
-    if(top < 0) top = $(span).height() +14;
-    var left = target.clientX +15;
     $(span).removeAttr("title");
 
     // TODO use qtip, it will handle edge cases better
@@ -137,7 +127,7 @@ var showAuthor = {
       ap = /'/g,
       ic = /"/g;
     authorName = authorName.toString().replace(lt, "&lt;").replace(gt, "&gt;").replace(ap, "&#39;").replace(ic, "&#34;");
-    var $indicator = $("<div class='authortooltip' style='opacity:.8;font-size:14px;padding:5px 5px 0px 5px;position:absolute;left:"+left+"px;top:"+top +"px;background-color:"+authorColor+"' title="+authorName+">"+authorName+"</div>");
+    var $indicator = $("<div class='authortooltip' style='opacity:.8;font-size:14px;padding:5px 5px 0px 5px;position:fixed;right:0px;bottom:0px;background-color:"+authorColor+"' title="+authorName+">"+authorName+"</div>");
     $(outBody).append($indicator);
 
     // After a while, fade out
@@ -145,7 +135,7 @@ var showAuthor = {
       $indicator.fadeOut(500, function(){
         $indicator.remove();
       });
-    }, 500);
+    }, 5000);
   },
   destroy: function(){
     $('iframe[name="ace_outer"]').contents().find(".authortooltip").remove();
